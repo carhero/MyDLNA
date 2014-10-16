@@ -20,6 +20,7 @@
 		155126E613BF4AF90042DEBF /* FolderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 155126E413BF4AF90042DEBF /* FolderViewController.m */; };
 		155126E713BF4AF90042DEBF /* FolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 155126E513BF4AF90042DEBF /* FolderViewController.xib */; };
 		155AC14F1502F87C00817BD9 /* PlayBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 155AC14E1502F87C00817BD9 /* PlayBack.m */; };
+		73D7F59A19F0042B00EBEE03 /* UpnpxStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73D7F59819F0042B00EBEE03 /* UpnpxStoryboard.storyboard */; };
 		9E3614631941520800CBF65D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E3614621941520800CBF65D /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		155126E513BF4AF90042DEBF /* FolderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FolderViewController.xib; sourceTree = "<group>"; };
 		155AC14D1502F87C00817BD9 /* PlayBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayBack.h; sourceTree = "<group>"; };
 		155AC14E1502F87C00817BD9 /* PlayBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayBack.m; sourceTree = "<group>"; };
+		73D7F59919F0042B00EBEE03 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/UpnpxStoryboard.storyboard; sourceTree = "<group>"; };
 		9E3614621941520800CBF65D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,18 +96,19 @@
 		15055E4713913F0A003DE49F /* upnpxdemo */ = {
 			isa = PBXGroup;
 			children = (
+				73D7F59819F0042B00EBEE03 /* UpnpxStoryboard.storyboard */,
+				15055E5313913F0A003DE49F /* MainWindow.xib */,
+				15055E5913913F0A003DE49F /* RootViewController.xib */,
+				155126E513BF4AF90042DEBF /* FolderViewController.xib */,
 				15055E5013913F0A003DE49F /* upnpxdemoAppDelegate.h */,
 				15055E5113913F0A003DE49F /* upnpxdemoAppDelegate.m */,
-				15055E5313913F0A003DE49F /* MainWindow.xib */,
 				15055E5613913F0A003DE49F /* RootViewController.h */,
 				15055E5713913F0A003DE49F /* RootViewController.m */,
-				15055E5913913F0A003DE49F /* RootViewController.xib */,
-				15055E4813913F0A003DE49F /* Supporting Files */,
 				155126E313BF4AF90042DEBF /* FolderViewController.h */,
 				155126E413BF4AF90042DEBF /* FolderViewController.m */,
-				155126E513BF4AF90042DEBF /* FolderViewController.xib */,
 				155AC14D1502F87C00817BD9 /* PlayBack.h */,
 				155AC14E1502F87C00817BD9 /* PlayBack.m */,
+				15055E4813913F0A003DE49F /* Supporting Files */,
 			);
 			path = upnpxdemo;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 				15055E4C13913F0A003DE49F /* InfoPlist.strings in Resources */,
 				15055E5513913F0A003DE49F /* MainWindow.xib in Resources */,
 				15055E5B13913F0A003DE49F /* RootViewController.xib in Resources */,
+				73D7F59A19F0042B00EBEE03 /* UpnpxStoryboard.storyboard in Resources */,
 				9E3614631941520800CBF65D /* Default-568h@2x.png in Resources */,
 				155126E713BF4AF90042DEBF /* FolderViewController.xib in Resources */,
 			);
@@ -222,6 +226,14 @@
 			name = RootViewController.xib;
 			sourceTree = "<group>";
 		};
+		73D7F59819F0042B00EBEE03 /* UpnpxStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				73D7F59919F0042B00EBEE03 /* en */,
+			);
+			name = UpnpxStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -237,7 +249,7 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -252,7 +264,7 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};

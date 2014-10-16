@@ -8,19 +8,23 @@
 
 #import "upnpxdemoAppDelegate.h"
 
+@interface upnpxdemoAppDelegate ()
+
+@end
+
 @implementation upnpxdemoAppDelegate
 
-
-@synthesize window=_window;
-
-@synthesize navigationController=_navigationController;
+//@synthesize window=_window;
+//@synthesize navigationController=_navigationController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if 0   //do not use *.xib file, but use *.stroyboard
     // Override point for customization after application launch.
     // Add the navigation controller's view to the window and display.
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
+#endif
     return YES;
 }
 

@@ -24,6 +24,9 @@
 {
     [super viewDidLoad];
     
+    self.menuView.dataSource = self;
+    self.menuView.delegate = self;
+    
     UPnPDB* db = [[UPnPManager GetInstance] DB];
     
     mDevices = [db rootDevices]; //BasicUPnPDevice

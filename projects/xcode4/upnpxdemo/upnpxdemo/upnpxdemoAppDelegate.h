@@ -1,3 +1,4 @@
+#if 0
 //
 //  upnpxdemoAppDelegate.h
 //  upnpxdemo
@@ -17,3 +18,14 @@
 @property (nonatomic, strong) IBOutlet UINavigationController *navigationController;
 
 @end
+#else
+
+#import <UIKit/UIKit.h>
+
+@interface upnpxdemoAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+
+@end
+#endif

@@ -10,7 +10,7 @@
 
 #import "UPnPDB.h"
 
-@interface RootViewController : UITableViewController <UPnPDBObserver>{
+@interface RootViewController : UIViewController <UPnPDBObserver, UITableViewDelegate, UITableViewDataSource>{
     UITableView *__weak menuView;
     NSArray *mDevices; //BasicUPnPDevice*
     UILabel *titleLabel;

@@ -10,6 +10,8 @@
 	<string>upnpxdemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>1FBE8F711F0708D0E43D50F4AB17D5D398564E1B</key>
+		<string>https://github.com/carhero/MyDLNA.git</string>
 		<key>B3112186D5EBB2EBCABA2655D74555F13C5C2E1A</key>
 		<string>https://github.com/fkuehne/upnpx.git</string>
 	</dict>
@@ -17,17 +19,27 @@
 	<string>projects/xcode4/upnpxdemo.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B3112186D5EBB2EBCABA2655D74555F13C5C2E1A</key>
+		<key>1FBE8F711F0708D0E43D50F4AB17D5D398564E1B</key>
 		<string>../../..</string>
+		<key>B3112186D5EBB2EBCABA2655D74555F13C5C2E1A</key>
+		<string>../../../../upnpx</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/fkuehne/upnpx.git</string>
+	<string>https://github.com/carhero/MyDLNA.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B3112186D5EBB2EBCABA2655D74555F13C5C2E1A</string>
+	<string>1FBE8F711F0708D0E43D50F4AB17D5D398564E1B</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1FBE8F711F0708D0E43D50F4AB17D5D398564E1B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MyDLNA</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
