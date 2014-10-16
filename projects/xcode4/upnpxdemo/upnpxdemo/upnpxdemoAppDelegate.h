@@ -18,6 +18,7 @@
 @property (nonatomic, strong) IBOutlet UINavigationController *navigationController;
 
 @end
+
 #else
 
 #import <UIKit/UIKit.h>
