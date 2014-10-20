@@ -40,7 +40,7 @@
     //Search for UPnP Devices 
     [[[UPnPManager GetInstance] SSDP] searchSSDP];      
     
-    self.title = @"upnpx demo - Xcode 4"; 
+    self.title = @"My DLNA - Xcode 8";
     self.navigationController.toolbarHidden = NO;
 
 
@@ -50,6 +50,7 @@
     [self.titleLabel setTextColor:[UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:1.0]];
     [self.titleLabel setText:@""];
     [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    self.titleLabel.textColor = [UIColor redColor];
 
     UIBarButtonItem *ttitle = [[UIBarButtonItem alloc] initWithCustomView:self.titleLabel];
 
@@ -84,6 +85,9 @@
     
     BOOL isMediaServer = [device.urn isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"];
     cell.accessoryType = isMediaServer ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    //yhcha adding table view image
+    cell.imageView.image = device.smallIcon;
+    
     
     NSLog(@"%ld %@", (long)indexPath.row, [device friendlyName]);
     

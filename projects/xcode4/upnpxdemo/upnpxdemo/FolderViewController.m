@@ -13,6 +13,14 @@
 #import "MediaServer1ContainerObject.h"
 #import "PlayBack.h"
 
+
+
+@interface FolderViewController ()
+{
+    NSArray *imagearray;
+}
+@end
+
 @implementation FolderViewController
 
 @synthesize titleLabel;
@@ -127,9 +135,31 @@
     
     cell.accessoryType = item.isContainer ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    return cell;    
+    //yhcha test : inserting album art image to uitable view
+    
+    cell.imageView.image = [UIImage imageNamed:@"defaultSong.jpg"];
+    NSLog(@"item.albumArt = %@",item.albumArt);
+    
+//    NSURL *url = [NSURL alloc]initWithString:<#(NSString *)#>
+#if 0
+    //get a dispatch queue
+    dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //this will start the image loading in bg
+    dispatch_async(concurrentQueue, ^{
+//        NSURL *url = [[NSURL alloc]initWithString:item.albumArt];
+        NSData *image = [[NSData alloc] initWithContentsOfFile:item.albumArt];
+        
+        //this will set the image when loading is finished
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.imageView.image = [UIImage imageWithData:image];
+        });
+    });
+#endif
+    return cell;
     
 }
+
+
 
 #pragma mark - Table view delegate
 
