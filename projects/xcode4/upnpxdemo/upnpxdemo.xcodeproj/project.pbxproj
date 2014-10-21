@@ -21,6 +21,7 @@
 		155126E713BF4AF90042DEBF /* FolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 155126E513BF4AF90042DEBF /* FolderViewController.xib */; };
 		155AC14F1502F87C00817BD9 /* PlayBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 155AC14E1502F87C00817BD9 /* PlayBack.m */; };
 		2D577EC419F54747004098F2 /* defaultSong.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2D577EC319F54747004098F2 /* defaultSong.jpg */; };
+		2D6AC48919F63F4500B69237 /* AlbumArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6AC48819F63F4500B69237 /* AlbumArt.m */; };
 		73D7F59A19F0042B00EBEE03 /* UpnpxStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73D7F59819F0042B00EBEE03 /* UpnpxStoryboard.storyboard */; };
 		9E3614631941520800CBF65D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E3614621941520800CBF65D /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,8 @@
 		155AC14D1502F87C00817BD9 /* PlayBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayBack.h; sourceTree = "<group>"; };
 		155AC14E1502F87C00817BD9 /* PlayBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayBack.m; sourceTree = "<group>"; };
 		2D577EC319F54747004098F2 /* defaultSong.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = defaultSong.jpg; sourceTree = "<group>"; };
+		2D6AC48719F63F4500B69237 /* AlbumArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArt.h; sourceTree = "<group>"; };
+		2D6AC48819F63F4500B69237 /* AlbumArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArt.m; sourceTree = "<group>"; };
 		73D7F59919F0042B00EBEE03 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/UpnpxStoryboard.storyboard; sourceTree = "<group>"; };
 		9E3614621941520800CBF65D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +113,8 @@
 				155126E413BF4AF90042DEBF /* FolderViewController.m */,
 				155AC14D1502F87C00817BD9 /* PlayBack.h */,
 				155AC14E1502F87C00817BD9 /* PlayBack.m */,
+				2D6AC48719F63F4500B69237 /* AlbumArt.h */,
+				2D6AC48819F63F4500B69237 /* AlbumArt.m */,
 				15055E4813913F0A003DE49F /* Supporting Files */,
 			);
 			path = upnpxdemo;
@@ -206,6 +211,7 @@
 				15055E4F13913F0A003DE49F /* main.m in Sources */,
 				15055E5213913F0A003DE49F /* upnpxdemoAppDelegate.m in Sources */,
 				15055E5813913F0A003DE49F /* RootViewController.m in Sources */,
+				2D6AC48919F63F4500B69237 /* AlbumArt.m in Sources */,
 				155126E613BF4AF90042DEBF /* FolderViewController.m in Sources */,
 				155AC14F1502F87C00817BD9 /* PlayBack.m in Sources */,
 			);

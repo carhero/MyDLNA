@@ -12,7 +12,8 @@
 #import "MediaServer1ItemObject.h"
 #import "MediaServer1ContainerObject.h"
 #import "PlayBack.h"
-
+#import "AlbumArt.h"
+//#import "SoapActionsRenderingControl1.h"  //yhcha test
 
 
 @interface FolderViewController ()
@@ -51,6 +52,8 @@
     [super viewDidLoad];
     
     // Before we do anything, some devices do not support sorting and will fail if we try to sort on our request
+    
+    NSLog(@"Folder View did load is called");
     NSString *sortCriteria = @"";
     NSMutableString *outSortCaps = [[NSMutableString alloc] init];
     [[m_device contentDirectory] GetSortCapabilitiesWithOutSortCaps:outSortCaps];
@@ -119,8 +122,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -133,14 +134,18 @@
    [[cell textLabel] setText:[item title]];
     NSLog(@"[item title]:%@", [item title]);
     
+    NSLog(@"[item isContainer]:%d", [item isContainer]);
     cell.accessoryType = item.isContainer ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     //yhcha test : inserting album art image to uitable view
     
     cell.imageView.image = [UIImage imageNamed:@"defaultSong.jpg"];
-    NSLog(@"item.albumArt = %@",item.albumArt);
+    if(item.albumArt != nil)
+    {
+        NSLog(@"item.albumArt = %@",item.albumArt);
+    }
     
-//    NSURL *url = [NSURL alloc]initWithString:<#(NSString *)#>
+//    NSURL *url = [NSURL alloc]initWithString:
 #if 0
     //get a dispatch queue
     dispatch_queue_t concurrentQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -168,10 +173,14 @@
     
     MediaServer1BasicObject *item = m_playList[indexPath.row];
     if([item isContainer]){
+        //view sub folder tree
+        
         MediaServer1ContainerObject *container = m_playList[indexPath.row];
         FolderViewController *targetViewController = [[FolderViewController alloc] initWithMediaDevice:m_device andHeader:[container title] andRootId:[container objectID]];
         [[self navigationController] pushViewController:targetViewController animated:YES];
-    }else{
+    }
+    else {
+        //Play song and send song stream from server to renderer
         MediaServer1ItemObject *item = m_playList[indexPath.row];
 
         MediaServer1ItemRes *resource = nil;		
@@ -182,6 +191,16 @@
 
         [[PlayBack GetInstance] Play:m_playList position:indexPath.row];
         
+        
+        //self에 StoryBoard에 대한 Init이 되어 있지 않았기 때문에 Nil pointer로 page 가 push 되어 나타났던 것이다.
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UpnpxStoryboard" bundle:[NSBundle mainBundle]];
+
+        AlbumArt *targetViewController;
+        if (targetViewController == nil) {
+            targetViewController = [storyboard instantiateViewControllerWithIdentifier:@"AlbumArtPage"];
+//            targetViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AlbumArtPage"];
+        }
+        [[self navigationController] pushViewController:targetViewController animated:YES];
     }
 }
 

@@ -97,12 +97,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BasicUPnPDevice *device = mDevices[indexPath.row];
+    
+    //yhcha server 일 경우 하위 폴더구조로 이동한다. FolderViewController  class 를 call 한다.
     if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
-        MediaServer1Device *server = (MediaServer1Device*)device;        
-        FolderViewController *targetViewController = [[FolderViewController alloc] initWithMediaDevice:server andHeader:@"root" andRootId:@"0" ];
+#if 1   //yhcha Test
+        MediaServer1Device *server = (MediaServer1Device*)device;
+        FolderViewController *targetViewController = [[FolderViewController alloc] initWithMediaDevice:server andHeader:@"Media Server" andRootId:@"0" ];
         [[self navigationController] pushViewController:targetViewController animated:YES];
         [[PlayBack GetInstance] setServer:server];
-    }else if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaRenderer:1"]){
+#else
+        
+        MediaServer1Device *server = (MediaServer1Device*)device;
+        FolderViewController *targetViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AlbumArtPage"];
+//        targetViewController = [[FolderViewController alloc]initWithMediaDevice:server andHeader:@"Media Server" andRootId:@"0"];
+        [[self navigationController] pushViewController:targetViewController animated:YES];
+#endif
+    }
+    //Media Renderer일 경우의 UITableView의 제알 하단의 바에 글씨를 새긴다.
+    else if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaRenderer:1"]){
         [self.titleLabel setText:[device friendlyName]];
         MediaRenderer1Device *render = (MediaRenderer1Device*)device;
         [[PlayBack GetInstance] setRenderer:render];

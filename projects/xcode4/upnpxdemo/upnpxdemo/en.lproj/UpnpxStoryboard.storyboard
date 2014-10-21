@@ -29,9 +29,6 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="CXX-NB-cfc">
-                                <rect key="frame" x="40" y="486" width="250" height="31"/>
-                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -45,6 +42,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cv5-4w-AjG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="527" y="264"/>
+        </scene>
+        <!--Album Art-->
+        <scene sceneID="Egr-Li-BGv">
+            <objects>
+                <viewController storyboardIdentifier="AlbumArtPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nzf-ZE-gLI" customClass="AlbumArt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DHw-Kh-opI"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ia6-yW-G7B"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oo4-Wa-ryT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N84-Bp-MlK">
+                                <rect key="frame" x="27" y="57" width="267" height="261"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjh-Lr-dtb">
+                                <rect key="frame" x="145" y="380" width="30" height="30"/>
+                                <state key="normal" title="재생">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PlayPause:" destination="Nzf-ZE-gLI" eventType="touchUpInside" id="jEY-CU-bRs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JfP-g0-wm0">
+                                <rect key="frame" x="78" y="380" width="39" height="30"/>
+                                <state key="normal" title="이전곡">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PlayPrev:" destination="Nzf-ZE-gLI" eventType="touchUpInside" id="I9c-mq-v8l"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5wv-jq-D18">
+                                <rect key="frame" x="202" y="380" width="39" height="30"/>
+                                <state key="normal" title="다음곡">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="PlayNext:" destination="Nzf-ZE-gLI" eventType="touchUpInside" id="g9F-8H-CL4"/>
+                                </connections>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pnN-qI-FJn">
+                                <rect key="frame" x="35" y="463" width="250" height="31"/>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="AlbumeArtView" destination="N84-Bp-MlK" id="Gwv-LH-t7E"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hzI-Fp-oXc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="879" y="264"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PjA-9d-RLx">

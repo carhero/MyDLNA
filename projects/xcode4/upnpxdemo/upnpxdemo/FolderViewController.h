@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MediaServer1Device.h"
 
-@interface FolderViewController : UITableViewController {
+@interface FolderViewController : UITableViewController{
     NSString *m_rootId;
     NSString *m_title;
     MediaServer1Device *m_device;
