@@ -13,6 +13,7 @@
 #import "MediaServer1ContainerObject.h"
 #import "PlayBack.h"
 #import "AlbumArt.h"
+
 //#import "SoapActionsRenderingControl1.h"  //yhcha test
 
 
@@ -181,25 +182,27 @@
     }
     else {
         //Play song and send song stream from server to renderer
+#if 0   //yhcha Test (Just Only debug print)
         MediaServer1ItemObject *item = m_playList[indexPath.row];
-
         MediaServer1ItemRes *resource = nil;		
         NSEnumerator *e = [[item resources] objectEnumerator];
         while((resource = (MediaServer1ItemRes*)[e nextObject])){
             NSLog(@"%@ - %d, %@, %d, %lld, %d, %@", [item title], [resource bitrate], [resource duration], [resource nrAudioChannels], [resource size],  [resource durationInSeconds],  [resource protocolInfo] );
         }	    
-
+#endif
         [[PlayBack GetInstance] Play:m_playList position:indexPath.row];
         
         
         //self에 StoryBoard에 대한 Init이 되어 있지 않았기 때문에 Nil pointer로 page 가 push 되어 나타났던 것이다.
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UpnpxStoryboard" bundle:[NSBundle mainBundle]];
-
+        
         AlbumArt *targetViewController;
         if (targetViewController == nil) {
             targetViewController = [storyboard instantiateViewControllerWithIdentifier:@"AlbumArtPage"];
 //            targetViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"AlbumArtPage"];
         }
+        [targetViewController setSongIdx:indexPath.row];
+        [targetViewController setm_playList:m_playList];
         [[self navigationController] pushViewController:targetViewController animated:YES];
     }
 }

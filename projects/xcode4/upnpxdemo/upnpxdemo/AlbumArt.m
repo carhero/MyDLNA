@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Bruno Keymolen. All rights reserved.
 //
 
+#import "MediaServerBasicObjectParser.h"
+#import "MediaServer1ItemObject.h"
+#import "MediaServer1ContainerObject.h"
+#import "FolderViewController.h"
+#import "PlayBack.h"
 #import "AlbumArt.h"
 
 @interface AlbumArt ()
@@ -14,11 +19,21 @@
 
 @implementation AlbumArt
 
+@synthesize AlbumeArtView;
+//@synthesize SongIdx = _SongIdx;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UIImage *image = [[UIImage alloc]initWithContentsOfFile:@"defaultSong.jpg"];
     
-    NSLog(@"Album Art viewDidLoad is called");
+    UIImageView *imageview = [[UIImageView alloc]initWithImage:image];
+    imageview.frame = CGRectMake(100, 100, 200, 200);
+//    self.AlbumeArtView.image = image;
+//    
+    [self.view addSubview:imageview];
+//    UIImage *albumArtImage = [[UIImage alloc]initWithContentsOfFile:@""];
+    NSLog(@"Album Art viewDidLoad is called, self.SongIdx = %ld", _SongIdx);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,16 +42,43 @@
 }
 
 - (IBAction)PlayNext:(id)sender {
-    NSLog(@"PlayNext");
+
+//    MediaServer1ItemObject *item = m_playList[_SongIdx];
+//    MediaServer1ContainerObject *container = _m_playList[_SongIdx];
+//    FolderViewController *targetViewController = [[FolderViewController alloc] initWithMediaDevice:m_device andHeader:[container title] andRootId:[container objectID]];
+    
+    
+    
+    [[PlayBack GetInstance] Play:_m_playList position:_SongIdx+1];
+    _SongIdx += 1;
+    
+    NSLog(@"PlayNext, %ld",_SongIdx);
 }
 
 
 - (IBAction)PlayPause:(id)sender {
-    NSLog(@"PlayPause");
+    NSLog(@"PlayPause, %ld",_SongIdx);
+    [[PlayBack GetInstance] Play:_m_playList position:_SongIdx];
 }
 
 - (IBAction)PlayPrev:(id)sender {
-    NSLog(@"PlayPrev");
+    NSLog(@"PlayPrev,%ld",_SongIdx);
+    [[PlayBack GetInstance] Play:_m_playList position:_SongIdx-1];
+    _SongIdx -= 1;
+}
+
+- (void)setSongIdx:(NSInteger)SongIdxLoc
+{
+    _SongIdx = SongIdxLoc;
+}
+
+- (void)setm_playList:(NSMutableArray*)MediaplayList
+{
+    if(!_m_playList)
+    {
+        _m_playList = [[NSMutableArray alloc]init];
+    }
+    _m_playList = MediaplayList;
 }
 
 /*
