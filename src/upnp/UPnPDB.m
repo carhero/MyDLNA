@@ -50,7 +50,7 @@
 
 @synthesize rootDevices;
 
--(id)initWithSSDP:(SSDPDB_ObjC*)ssdp{
+-(instancetype)initWithSSDP:(SSDPDB_ObjC*)ssdp{
     self = [super init];
 
     if (self) {
@@ -61,7 +61,7 @@
         readyForDescription = [[NSMutableArray alloc] init];//BasicUPnPDevice
         mObservers = [[NSMutableArray alloc] init];
 
-        [mSSDP addObserver:(SSDPDB_ObjC_Observer*)self];
+        [mSSDP addObserver:self];
 
         mHTTPThread = [[NSThread alloc] initWithTarget:self selector:@selector(httpThread:) object:nil];
         [mHTTPThread start];
@@ -72,7 +72,7 @@
 
 -(void)dealloc{
     [mHTTPThread cancel];
-    [mSSDP removeObserver:(SSDPDB_ObjC_Observer*)self];
+    [mSSDP removeObserver:self];
     [rootDevices removeAllObjects];
     [rootDevices release];
     rootDevices = nil;
@@ -181,20 +181,28 @@
     if([discardedItems count] > 0){
         //Inform the listeners so they know the rootDevices array might change
         UPnPDBObserver *obs;
-        NSEnumerator *listeners = [mObservers objectEnumerator];
-        while((obs = [listeners nextObject])){
-            if ([(NSObject*)obs respondsToSelector:@selector(UPnPDBWillUpdate:)]) {
-                [obs UPnPDBWillUpdate:self];
+        NSEnumerator *listeners;
+
+        if ([mMutex tryLock]) {
+            listeners = [mObservers objectEnumerator];
+            while((obs = [listeners nextObject])){
+                if ([(NSObject*)obs respondsToSelector:@selector(UPnPDBWillUpdate:)]) {
+                    [obs UPnPDBWillUpdate:self];
+                }
             }
+            [self unlock];
         }
 
         [rootDevices removeObjectsInArray:discardedItems];
 
-        listeners = [mObservers objectEnumerator];
-        while((obs = [listeners nextObject])){
-            if ([(NSObject*)obs respondsToSelector:@selector(UPnPDBUpdated:)]) {
-                [obs UPnPDBUpdated:self];
+        if ([mMutex tryLock]) {
+            listeners = [mObservers objectEnumerator];
+            while((obs = [listeners nextObject])){
+                if ([(NSObject*)obs respondsToSelector:@selector(UPnPDBUpdated:)]) {
+                    [obs UPnPDBUpdated:self];
+                }
             }
+            [self unlock];
         }
     }
     [discardedItems release];
@@ -288,10 +296,13 @@
                 //while(upnpdevice = [descenum nextObject]){
                         //Inform the listeners so they know the rootDevices array might change
 
-                for (id<UPnPDBObserver> observer in mObservers) {
-                    if ([observer respondsToSelector:@selector(UPnPDBWillUpdate:)]) {
-                        [observer UPnPDBWillUpdate:self];
+                if ([mMutex tryLock]) {
+                    for (id<UPnPDBObserver> observer in mObservers) {
+                        if ([observer respondsToSelector:@selector(UPnPDBWillUpdate:)]) {
+                            [observer UPnPDBWillUpdate:self];
+                        }
                     }
+                    [self unlock];
                 }
 
                 while( [readyForDescription count] > 0){
@@ -310,10 +321,13 @@
 
                 }
 
-                for (id<UPnPDBObserver> observer in mObservers) {
-                    if ([observer respondsToSelector:@selector(UPnPDBUpdated:)]) {
-                        [observer UPnPDBUpdated:self];
+                if ([mMutex tryLock]) {
+                    for (id<UPnPDBObserver> observer in mObservers) {
+                        if ([observer respondsToSelector:@selector(UPnPDBUpdated:)]) {
+                            [observer UPnPDBUpdated:self];
+                        }
                     }
+                    [self unlock];
                 }
             }
 

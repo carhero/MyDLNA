@@ -46,59 +46,71 @@ static NSString *ElementStart = @"ElementStart";
 static NSString *ElementStop = @"ElementStop";
 
 
--(id)init{
+-(instancetype)init{
     return [self initWithNamespaceSupport:NO];
 }
 
--(id)initWithNamespaceSupport:(BOOL)namespaceSupport{
+-(instancetype)initWithNamespaceSupport:(BOOL)namespaceSupport{
     self = [super init];
 
     if (self) {
         mSupportNamespaces = namespaceSupport;
-        mElementStack = [[NSMutableArray alloc] init];
-        mAssets = [[NSMutableArray alloc] init];
+        @synchronized(self) {
+            mElementStack = [[NSMutableArray alloc] init];
+            mAssets = [[NSMutableArray alloc] init];
+        }
     }
 
     return self;
 }
 
 -(void)dealloc{
-    [mElementStack release];
-    [mAssets release];
+    @synchronized(self) {
+        [mElementStack release];
+        [mAssets release];
+    }
     [super dealloc];
 }
 
 -(int)addAsset:(NSArray*)path callfunction:(SEL)function functionObject:(id)funcObj setStringValueFunction:(SEL)valueFunction setStringValueObject:(id)obj;{
     BasicParserAsset* asset = [[BasicParserAsset alloc] initWithPath:path setStringValueFunction:valueFunction setStringValueObject:obj callFunction:function functionObject:funcObj];
-    [mAssets addObject:asset];
+    @synchronized(self) {
+        [mAssets addObject:asset];
+    }
     [asset release];
     return 0;
 }
 
 
 -(void)clearAllAssets{
-    [mAssets removeAllObjects];
+    @synchronized(self) {
+        [mAssets removeAllObjects];
+    }
 }
-
-
 
 -(BasicParserAsset*)getAssetForElementStack:(NSMutableArray*)stack{
     BasicParserAsset* ret = nil;
     BasicParserAsset* asset = nil;
+    NSArray *elementStack;
+    NSArray *assets;
 
-    NSEnumerator *enumer = [mAssets objectEnumerator];
+    @synchronized (self) {
+        elementStack = [[stack copy] autorelease];
+        assets = [[mAssets copy] autorelease];
+    }
+    NSEnumerator *enumer = [assets objectEnumerator];
     while((asset = [enumer nextObject])){
         //Full compares go first
-        if([[asset path] isEqualToArray:stack]){
+        if([[asset path] isEqualToArray:elementStack]){
             ret = asset;
             break;
         }else{
             // * -> leafX -> leafY
             //Maybe we have a wildchar, that means that the path after the wildchar must match
             if([(NSString*)[asset path][0] isEqualToString:@"*"]){
-                if([stack count] >= [[asset path] count]){
+                if([elementStack count] >= [[asset path] count]){
                     //Path ends with
-                    NSMutableArray *lastStackPath = [[NSMutableArray alloc] initWithArray:stack];
+                    NSMutableArray *lastStackPath = [[NSMutableArray alloc] initWithArray:elementStack];
                     NSMutableArray *lastAssetPath = [[NSMutableArray alloc] initWithArray:[asset path]];
                     //cut the * from our asset path
                     [lastAssetPath removeObjectAtIndex:0];
@@ -120,9 +132,9 @@ static NSString *ElementStop = @"ElementStop";
             }
             // leafX -> leafY -> *
             if([(NSString*)[[asset path] lastObject] isEqualToString:@"*"]){
-                if([stack count] == [[asset path] count] && [stack count] > 1){
+                if([elementStack count] == [[asset path] count] && [elementStack count] > 1){
                     //Path start with
-                    NSMutableArray *beginStackPath = [[NSMutableArray alloc] initWithArray:stack];
+                    NSMutableArray *beginStackPath = [[NSMutableArray alloc] initWithArray:elementStack];
                     NSMutableArray *beginAssetPath = [[NSMutableArray alloc] initWithArray:[asset path]];
                     //Cut the last entry (which is * in one array and <element> in the other
                     [beginStackPath removeLastObject];
@@ -145,9 +157,18 @@ static NSString *ElementStop = @"ElementStop";
     return ret;
 }
 
-
 -(int)parseFromData:(NSData*)data{
     @autoreleasepool {
+        if (data != nil) {
+            NSString *xml = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            if (xml != nil) {
+                NSError *error = NULL;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\s*$\\r?\\n" options:NSRegularExpressionAnchorsMatchLines error:&error];
+                xml = [regex stringByReplacingMatchesInString:xml options:0 range:NSMakeRange(0, [xml length]) withTemplate:@""];
+                data = [xml dataUsingEncoding:NSUTF8StringEncoding];
+            } else
+                return -1;
+        }
         NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
         int ret = [self startParser:parser];
         [parser release];
@@ -162,9 +183,18 @@ static NSString *ElementStop = @"ElementStop";
         [[NSURLCache sharedURLCache] setMemoryCapacity:0];
         [[NSURLCache sharedURLCache] setDiskCapacity:0];
 
-        NSData *xml = [NSData dataWithContentsOfURL:url];
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xml];;
-
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if (data != nil) {
+            NSString *xml = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            if (xml != nil) {
+                NSError *error = NULL;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\s*$\\r?\\n" options:NSRegularExpressionAnchorsMatchLines error:&error];
+                xml = [regex stringByReplacingMatchesInString:xml options:0 range:NSMakeRange(0, [xml length]) withTemplate:@""];
+                data = [xml dataUsingEncoding:NSUTF8StringEncoding];
+            } else
+                return -1;
+        }
+        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
         int ret = [self startParser:parser];
         [parser release];
         return ret;
@@ -175,23 +205,12 @@ static NSString *ElementStop = @"ElementStop";
     if(parser == nil){
         return -1;
     }
-    
-    // iOS 8 changes behaviour based on reentrant parsing, requiring a 
-    // synchronous workaround.
-    // https://devforums.apple.com/message/1028271
-    __block BOOL pret;
-    dispatch_queue_t reentrantAvoidanceQueue = dispatch_queue_create("reentrantAvoidanceQueue", DISPATCH_QUEUE_SERIAL);
-    dispatch_async(reentrantAvoidanceQueue, ^{
 
-        [parser setShouldProcessNamespaces:mSupportNamespaces];
-        [parser setDelegate:self];
+    [parser setShouldProcessNamespaces:mSupportNamespaces];
+    [parser setDelegate:self];
 
-        pret = [parser parse];
-        [parser setDelegate:nil];
-            
-    });
-    
-    dispatch_sync(reentrantAvoidanceQueue, ^{ });
+    BOOL pret = [parser parse];
+    [parser setDelegate:nil];
 
     return pret? 0: -1;
 }
@@ -209,7 +228,9 @@ static NSString *ElementStop = @"ElementStop";
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict{
     //NSLog(@"open=%@", elementName);
-    [mElementStack addObject:elementName];
+    @synchronized(self) {
+        [mElementStack addObject:elementName];
+    }
 
     //Check if we are looking for this asset
     BasicParserAsset* asset = [self getAssetForElementStack:mElementStack];
@@ -260,8 +281,15 @@ static NSString *ElementStop = @"ElementStop";
         [elementAttributeDict release];
     }
 
-    if([elementName isEqualToString:[mElementStack lastObject]]){
-        [mElementStack removeLastObject];
+    NSString *lastObject;
+    @synchronized(self) {
+        lastObject = [mElementStack lastObject];
+    }
+
+    if([elementName isEqualToString:lastObject]){
+        @synchronized(self) {
+            [mElementStack removeLastObject];
+        }
     }else{
         //XML structure error (!)
         NSLog(@"XML wrong formatted (!)");

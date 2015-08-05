@@ -93,6 +93,10 @@ int SSDP::Start(){
     ret = setsockopt(mMulticastSocket, SOL_SOCKET, SO_REUSEPORT, (char*)&optval, 4);
     STATVAL(ret, 0, CLEAN_AND_EXIT);
 
+    //Never generate SIGPIPE on broken write
+    optval = 1;
+    ret = setsockopt(mMulticastSocket, SOL_SOCKET, SO_NOSIGPIPE, (void *)&optval, sizeof(int));
+    STATVAL(ret, 0, CLEAN_AND_EXIT);
 
     //Disable loopback
     optval = 0;
@@ -260,6 +264,10 @@ int SSDP::SearchForMediaRenderer(){
     return this->SendSearchRequest("urn:schemas-upnp-org:device:MediaRenderer:1");
 }
 
+int SSDP::SearchForContentDirectory(){
+    return this->SendSearchRequest("urn:schemas-upnp-org:service:ContentDirectory:1");
+}
+
 int SSDP::AddObserver(SSDPObserver* observer){
     RemoveObserver(observer);
     mObservers.push_back(observer);
@@ -285,7 +293,6 @@ int SSDP::RemoveObserver(SSDPObserver* observer){
     return 0;
 }
 
-
 void SSDP::SetOS(const char* os){
     if(os)
         mOS = os;
@@ -296,11 +303,8 @@ void SSDP::SetProduct(const char* product){
         mProduct = product;
 }
 
-
 std::string mOS;
-std::string mProcuct;
-
-
+std::string mProduct;
 
 int SSDP::ReadLoop(){
     int ret = 0;

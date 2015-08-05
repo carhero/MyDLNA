@@ -56,7 +56,7 @@
 @implementation SoapAction
 
 
--(id)initWithActionURL:(NSURL*)aUrl eventURL:(NSURL*)eUrl upnpnamespace:(NSString*)ns{
+-(instancetype)initWithActionURL:(NSURL*)aUrl eventURL:(NSURL*)eUrl upnpnamespace:(NSString*)ns{
     self = [super initWithNamespaceSupport:YES];
 
     if (self) {
@@ -129,6 +129,7 @@
         NSString *rsp = [[NSString  alloc] initWithData:resp encoding:NSUTF8StringEncoding];
         NSLog(@"Error (SoapAction): Got a non 200 response: %ld. Data: %@", (long)[urlResponse statusCode], rsp);
         [rsp release];
+        if (ret == 0) ret = -408;
     }else{
         ret = 0;
     }

@@ -1,11 +1,9 @@
-MyDLNA
+upnpx
 =====
 
 Fork of the discontinued upnpx library by Bruno Keymolen.
 
 Including various logic and stability improvements over the last version.
-
-This project is changed to use storyboard UI, but function is almost same before one.
 
 =====
 
@@ -14,8 +12,6 @@ Copyright (c) 2011-2012, Bruno Keymolen
 Copyright (c) 2013, Jonathan Guan, Mujtaba Hassanpur, Gleb Pinigin
 
 Copyright (c) 2013-2014, Felix Paul Kühne
-
-Copyright (c) 2014 Y.H Cha.
 
 Contributions by Andrejs Cernikovs (c) 2012, Sebastian Peischl (c) 2014, Sebastian Roth (c) 2014.
 

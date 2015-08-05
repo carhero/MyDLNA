@@ -74,7 +74,7 @@ private:
 
 @synthesize SSDPObjCDevices;
 
--(id)init
+-(instancetype)init
 {
     self = [super init];
 
@@ -138,7 +138,11 @@ private:
     return UPNP::GetInstance()->GetSSDP()->SearchForMediaRenderer();
 }
 
--(NSUInteger)addObserver:(SSDPDB_ObjC_Observer*)obs{
+-(int)searchForContentDirectory {
+    return UPNP::GetInstance()->GetSSDP()->SearchForContentDirectory();
+}
+
+-(NSUInteger)addObserver:(id <SSDPDB_ObjC_Observer>)obs{
     NSUInteger ret = 0;
     [self lock];
     [mObservers addObject:obs];
@@ -147,7 +151,7 @@ private:
     return ret;
 }
 
--(NSUInteger)removeObserver:(SSDPDB_ObjC_Observer*)obs{
+-(NSUInteger)removeObserver:(id <SSDPDB_ObjC_Observer>)obs{
     NSUInteger ret = 0;
     [self lock];
     [mObservers removeObject:obs];
@@ -159,11 +163,21 @@ private:
 -(void)setUserAgentProduct:(NSString*)product andOS:(NSString*)os{
     if(os != nil){
         const char *c_os = [os cStringUsingEncoding:NSASCIIStringEncoding];
-        UPNP::GetInstance()->GetSSDP()->SetOS(c_os);
+        if (c_os == NULL)
+            return;
+
+        SSDP *ssdp = UPNP::GetInstance()->GetSSDP();
+        if (ssdp != NULL)
+            ssdp->SetOS(c_os);
     }
     if(product != nil){
         const char *c_product = [product cStringUsingEncoding:NSASCIIStringEncoding];
-        UPNP::GetInstance()->GetSSDP()->SetProduct(c_product);
+        if (c_product == NULL)
+            return;
+
+        SSDP* ssdp = UPNP::GetInstance()->GetSSDP();
+        if (ssdp != NULL)
+            ssdp->SetProduct(c_product);
     }
 }
 
@@ -171,7 +185,7 @@ private:
     [NSRunLoop currentRunLoop];//Start our runloop
 
     @autoreleasepool {
-        SSDPDB_ObjC_Observer *obs;
+        id <SSDPDB_ObjC_Observer> obs;
 
         //Inform the listeners
         NSEnumerator *listeners = [mObservers objectEnumerator];
@@ -225,7 +239,7 @@ private:
 @synthesize port;
 
 
--(id)initWithCPPDevice:(void*)cppDevice{
+-(instancetype)initWithCPPDevice:(void*)cppDevice{
     self = [super init];
 
     if (self) {

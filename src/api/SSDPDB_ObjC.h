@@ -60,15 +60,16 @@
 -(void)lock;
 -(void)unlock;
 
--(int)startSSDP;
--(int)stopSSDP;
--(int)searchSSDP;
--(int)searchForMediaServer;
--(int)searchForMediaRenderer;
--(int)notifySSDPAlive;
--(int)notifySSDPByeBye;
--(NSUInteger)addObserver:(SSDPDB_ObjC_Observer*)obs;
--(NSUInteger)removeObserver:(SSDPDB_ObjC_Observer*)obs;
+@property (NS_NONATOMIC_IOSONLY, readonly) int startSSDP;
+@property (NS_NONATOMIC_IOSONLY, readonly) int stopSSDP;
+@property (NS_NONATOMIC_IOSONLY, readonly) int searchSSDP;
+@property (NS_NONATOMIC_IOSONLY, readonly) int searchForMediaServer;
+@property (NS_NONATOMIC_IOSONLY, readonly) int searchForMediaRenderer;
+@property (NS_NONATOMIC_IOSONLY, readonly) int searchForContentDirectory;
+@property (NS_NONATOMIC_IOSONLY, readonly) int notifySSDPAlive;
+@property (NS_NONATOMIC_IOSONLY, readonly) int notifySSDPByeBye;
+-(NSUInteger)addObserver:(id <SSDPDB_ObjC_Observer>)obs;
+-(NSUInteger)removeObserver:(id <SSDPDB_ObjC_Observer>)obs;
 -(void)SSDPDBUpdate;
 -(void)setUserAgentProduct:(NSString*)product andOS:(NSString*)os;
 
@@ -96,7 +97,7 @@
     unsigned short port;
 }
 
--(id)initWithCPPDevice:(void*)cppDevice;
+-(instancetype)initWithCPPDevice:(void*)cppDevice NS_DESIGNATED_INITIALIZER;
 
 @property(readonly) bool isdevice;
 @property(readonly) bool isroot;

@@ -44,7 +44,7 @@
     NSString *currentElementName;
 }
 
--(id)initWithNamespaceSupport:(BOOL)namespaceSupport;
+-(instancetype)initWithNamespaceSupport:(BOOL)namespaceSupport;
 
 -(void)clearAllAssets;
 -(int)addAsset:(NSArray*)path callfunction:(SEL)function functionObject:(id)funcObj setStringValueFunction:(SEL)valueFunction setStringValueObject:(id)obj;
