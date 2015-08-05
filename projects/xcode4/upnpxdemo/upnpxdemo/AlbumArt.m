@@ -13,6 +13,11 @@
 #import "PlayBack.h"
 #import "AlbumArt.h"
 
+
+extern NSString *gImageURL;
+
+
+
 @interface AlbumArt ()
 
 @end
@@ -34,7 +39,16 @@
     [self.view addSubview:imageview];
 //    UIImage *albumArtImage = [[UIImage alloc]initWithContentsOfFile:@""];
     NSLog(@"Album Art viewDidLoad is called, self.SongIdx = %ld", _SongIdx);
+    
+    
+    UIImage* myImage = [UIImage imageWithData:
+                        [NSData dataWithContentsOfURL:
+                         [NSURL URLWithString: (NSString *)gImageURL]]];
+    
+    self.AlbumeArtView.image = myImage;
+    
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

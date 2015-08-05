@@ -16,6 +16,7 @@
 
 //#import "SoapActionsRenderingControl1.h"  //yhcha test
 
+NSString *gImageURL;
 
 @interface FolderViewController ()
 {
@@ -190,6 +191,13 @@
             NSLog(@"%@ - %d, %@, %d, %lld, %d, %@", [item title], [resource bitrate], [resource duration], [resource nrAudioChannels], [resource size],  [resource durationInSeconds],  [resource protocolInfo] );
         }	    
 #endif
+        MediaServer1BasicObject *item = m_playList[indexPath.row];
+        
+        if(item.albumArt != nil)
+        {
+            gImageURL = item.albumArt;
+        }
+        
         [[PlayBack GetInstance] Play:m_playList position:indexPath.row];
         
         
